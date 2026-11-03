@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2026+ Ashly Dev. Todos los derechos reservados.
+  Licencia: GPL-3.0 (ver archivo LICENSE en la raíz del proyecto).
+-->
+<resources>
+    <string name="app_name">Cumpleaños</string>
+
+    <!-- Bottom bar -->
+    <string name="tab_birthdays">Cumples</string>
+    <string name="tab_today">Hoy</string>
+    <string name="tab_calendar">Calendario</string>
+    <string name="tab_stats">Estadísticas</string>
+    <string name="tab_settings">Ajustes</string>
+
+    <!-- Comunes -->
+    <string name="action_add">Añadir</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_close">Cerrar</string>
+
+    <!-- Lista -->
+    <string name="empty_birthdays_title">Aún no hay cumpleaños</string>
+    <string name="empty_birthdays_subtitle">Añade a tu primera persona con el botón +</string>
+    <string name="next_birthday_in_days">Faltan %1$d días</string>
+    <string name="today_is_birthday">¡Hoy es su cumpleaños!</string>
+    <string name="turns_years">Cumple %1$d años</string>
+
+    <!-- Formulario -->
+    <string name="field_name">Nombre</string>
+    <string name="field_birthdate">Fecha de nacimiento</string>
+    <string name="field_phone">Teléfono (opcional)</string>
+    <string name="field_notes">Notas (opcional)</string>
+    <string name="field_group">Grupo (opcional)</string>
+    <string name="field_photo">Foto</string>
+    <string name="field_advance_days">Aviso anticipado (días)</string>
+
+    <!-- Ajustes -->
+    <string name="settings_notifications">Notificaciones</string>
+    <string name="settings_default_time">Hora por defecto</string>
+    <string name="settings_ringtone">Tono de notificación</string>
+    <string name="settings_advance_days">Aviso anticipado por defecto</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_backup">Copia de seguridad</string>
+    <string name="settings_backup_export">Exportar JSON</string>
+    <string name="settings_backup_import">Importar JSON</string>
+    <string name="settings_import_contacts">Importar desde contactos</string>
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_version">Versión %1$s (build %2$d)</string>
+
+    <!-- Alarm -->
+    <string name="alarm_happy_birthday">¡Feliz cumpleaños!</string>
+    <string name="alarm_open_app">Abrir app</string>
+    <string name="alarm_dismiss">Descartar</string>
+    <string name="alarm_snooze">Posponer 1 h</string>
+    <string name="alarm_send_whatsapp">Felicitación por WhatsApp</string>
+
+    <!-- Notificaciones -->
+    <string name="channel_birthday_name">Cumpleaños</string>
+    <string name="channel_birthday_desc">Avisos de cumpleaños</string>
+
+    <!-- Widget / Tile -->
+    <string name="widget_label">Próximo cumple</string>
+    <string name="widget_no_birthdays">Sin cumples próximos</string>
+    <string name="tile_label">Próximo cumple</string>
+
+    <!-- Permisos -->
+    <string name="permission_notifications_rationale">Activa las notificaciones para recibir avisos de cumpleaños.</string>
+    <string name="permission_exact_alarm_rationale">Permite alarmas exactas para avisarte a la hora indicada.</string>
+</resources>

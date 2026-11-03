@@ -1,0 +1,43 @@
+# Copyright (c) 2025+ Ashly Dev. Todos los derechos reservados.
+# Licencia: GPL-3.0 (ver archivo LICENSE en la raíz del proyecto).
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local config
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+output.json
+
+# Logs
+*.log
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated
+/app/release/
+/app/debug/
