@@ -4,7 +4,6 @@
  */
 package cu.ashlydev.birthdays.domain.usecase
 
-import cu.ashlydev.birthdays.data.local.entity.UserStatsEntity
 import cu.ashlydev.birthdays.data.repository.AchievementRepository
 import cu.ashlydev.birthdays.data.repository.PersonRepository
 import cu.ashlydev.birthdays.data.repository.SettingsRepository
@@ -20,45 +19,41 @@ class AchievementEvaluator @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) {
 
-    /** Evalúa logros de "estado" (cantidad de personas, foto, grupo, etc.). */
     suspend fun evaluateStateAchievements(): List<AchievementKey> {
         val unlocked = mutableListOf<AchievementKey>()
         val persons = personRepository.getAllOnce()
         val count = persons.size
 
-        if (count >= 1) unlocked += tryUnlock(AchievementKey.FIRST_PERSON)
-        if (count >= 5) unlocked += tryUnlock(AchievementKey.FIVE_PEOPLE)
-        if (count >= 10) unlocked += tryUnlock(AchievementKey.TEN_PEOPLE)
-        if (count >= 25) unlocked += tryUnlock(AchievementKey.TWENTY_FIVE_PEOPLE)
-        if (persons.any { !it.fotoUri.isNullOrBlank() }) unlocked += tryUnlock(AchievementKey.HAS_PHOTO)
-        if (persons.any { it.grupoId != null }) unlocked += tryUnlock(AchievementKey.HAS_GROUP)
+        if (count >= 1) tryUnlock(AchievementKey.FIRST_PERSON)?.let { unlocked += it }
+        if (count >= 5) tryUnlock(AchievementKey.FIVE_PEOPLE)?.let { unlocked += it }
+        if (count >= 10) tryUnlock(AchievementKey.TEN_PEOPLE)?.let { unlocked += it }
+        if (count >= 25) tryUnlock(AchievementKey.TWENTY_FIVE_PEOPLE)?.let { unlocked += it }
+        if (persons.any { !it.fotoUri.isNullOrBlank() }) tryUnlock(AchievementKey.HAS_PHOTO)?.let { unlocked += it }
+        if (persons.any { it.grupoId != null }) tryUnlock(AchievementKey.HAS_GROUP)?.let { unlocked += it }
 
         val settings = settingsRepository.settings.first()
-        if (settings.avisoAnticipadoDias > 0) unlocked += tryUnlock(AchievementKey.SET_ADVANCE)
+        if (settings.avisoAnticipadoDias > 0) tryUnlock(AchievementKey.SET_ADVANCE)?.let { unlocked += it }
 
-        // Edad de la app: 30 días / 1 año
         val stats = achievementRepository.getStats()
         val elapsed = System.currentTimeMillis() - stats.primeraVezEnMillis
         val days = elapsed / (1000L * 60 * 60 * 24)
-        if (days >= 30) unlocked += tryUnlock(AchievementKey.THIRTY_DAYS)
-        if (days >= 365) unlocked += tryUnlock(AchievementKey.ONE_YEAR)
+        if (days >= 30) tryUnlock(AchievementKey.THIRTY_DAYS)?.let { unlocked += it }
+        if (days >= 365) tryUnlock(AchievementKey.ONE_YEAR)?.let { unlocked += it }
 
         return unlocked
     }
 
-    /** Se llama cuando el usuario felicita por WhatsApp. */
     suspend fun onWhatsAppSent(): List<AchievementKey> {
         val unlocked = mutableListOf<AchievementKey>()
         achievementRepository.updateStats { s ->
             s.copy(felicitacionesEnviadas = s.felicitacionesEnviadas + 1)
         }
         val stats = achievementRepository.getStats()
-        if (stats.felicitacionesEnviadas >= 1) unlocked += tryUnlock(AchievementKey.WHATSAPP_ONE)
-        if (stats.felicitacionesEnviadas >= 10) unlocked += tryUnlock(AchievementKey.WHATSAPP_TEN)
+        if (stats.felicitacionesEnviadas >= 1) tryUnlock(AchievementKey.WHATSAPP_ONE)?.let { unlocked += it }
+        if (stats.felicitacionesEnviadas >= 10) tryUnlock(AchievementKey.WHATSAPP_TEN)?.let { unlocked += it }
         return unlocked
     }
 
-    /** Se llama cuando el usuario descarta una notificación (equivale a "felicitó a tiempo"). */
     suspend fun onNotificationDismissed() {
         achievementRepository.updateStats { s ->
             val nueva = s.rachaActual + 1
@@ -74,7 +69,6 @@ class AchievementEvaluator @Inject constructor(
         tryUnlock(AchievementKey.RECEIVED_ONE_NOTIFICATION)
     }
 
-    /** Rompe la racha (si pasó un cumple sin descartar). */
     suspend fun resetStreak() {
         achievementRepository.updateStats { it.copy(rachaActual = 0) }
     }
@@ -84,7 +78,6 @@ class AchievementEvaluator @Inject constructor(
         return if (wasNew) key else null
     }
 
-    /** Texto y emoji por logro (para UI). */
     fun metadata(key: AchievementKey): Triple<String, String, String> = when (key) {
         AchievementKey.FIRST_PERSON -> Triple("Primer paso", "Añade tu primera persona", "🎂")
         AchievementKey.FIVE_PEOPLE -> Triple("Círculo íntimo", "Añade 5 personas", "👥")

@@ -22,30 +22,21 @@ import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
-import androidx.compose.ui.graphics.Color
-import cu.ashlydev.birthdays.data.repository.PersonRepository
-import cu.ashlydev.birthdays.domain.util.BirthdayCalculator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 class NextBirthdayWidget : GlanceAppWidget() {
-    @Inject lateinit var personRepository: PersonRepository
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             GlanceTheme {
-                WidgetContent(personRepository)
+                WidgetContent()
             }
         }
     }
 }
 
 @Composable
-private fun WidgetContent(repo: PersonRepository) {
-    // Glance no permite suspend aquí directamente; usamos un estado simple.
-    val persons = androidx.glance.appwidget.LocalContext.current
+private fun WidgetContent() {
     Column(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
