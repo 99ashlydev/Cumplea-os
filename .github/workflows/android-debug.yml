@@ -69,6 +69,16 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
+      - name: Clean Gradle cache (Hilt/Dagger)
+        run: |
+          echo "Limpiando cachés de Dagger/Hilt para evitar error.NonExistentClass en KSP..."
+          rm -rf ~/.gradle/caches/transforms-* || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1/com.google.dagger || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1/androidx.hilt || true
+
+      - name: Clean project build
+        run: ./gradlew clean --stacktrace --no-daemon
+
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace --no-daemon
 
