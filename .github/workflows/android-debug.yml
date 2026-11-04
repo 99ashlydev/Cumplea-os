@@ -1,8 +1,5 @@
 # Copyright (c) 2026+ Ashly Dev. Todos los derechos reservados.
 # Licencia: GPL-3.0 (ver archivo LICENSE en la raíz del proyecto).
-#
-# Compila la APK en modo debug universal (armv7 + arm64) y la sube como artifact.
-# No requiere keystore (usa el debug keystore autogenerado por AGP).
 
 name: Build Debug APK
 
@@ -37,16 +34,6 @@ jobs:
         with:
           packages: ''
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle/libs.versions.toml') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
       - name: Download gradle-wrapper.jar (si no existe)
         run: |
           if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
@@ -69,20 +56,15 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Clean Gradle cache (Hilt/Dagger + Room/KSP)
+      - name: Clean project build (force KSP regen)
         run: |
-          echo "Limpiando cachés de Dagger/Hilt y Room/KSP..."
-          rm -rf ~/.gradle/caches/transforms-* || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1/com.google.dagger || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1/androidx.hilt || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1/androidx.room || true
-          rm -rf app/build/generated/ksp || true
+          echo "Borrando build y código generado por KSP..."
+          rm -rf app/build
+          rm -rf build
+          ./gradlew clean --stacktrace --no-daemon
 
-      - name: Clean project build
-        run: ./gradlew clean --stacktrace --no-daemon
-
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-daemon
+      - name: Build debug APK (no cache)
+        run: ./gradlew assembleDebug --stacktrace --no-daemon --no-build-cache
 
       - name: Locate APK
         id: locate
