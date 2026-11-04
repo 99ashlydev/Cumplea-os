@@ -14,7 +14,6 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
-// Lee la versión desde version.properties (raíz del repo)
 val versionProps = Properties().apply {
     val f = rootProject.file("version.properties")
     if (f.exists()) f.inputStream().use { load(it) }
@@ -43,7 +42,6 @@ android {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            // APK universal: incluye armv7 y arm64 (no hay .so propios, es cinturón y tirantes)
             ndk {
                 abiFilters += listOf("armeabi-v7a", "arm64-v8a")
             }
@@ -74,8 +72,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    // Para que BuildConfig.VERSION_NAME y VERSION_CODE existan en Ajustes
-    // (buildConfig = true ya lo habilita)
 }
 
 ksp {
@@ -107,6 +103,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Room
