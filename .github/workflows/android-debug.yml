@@ -1,5 +1,8 @@
 # Copyright (c) 2026+ Ashly Dev. Todos los derechos reservados.
 # Licencia: GPL-3.0 (ver archivo LICENSE en la raíz del proyecto).
+#
+# Compila la APK en modo debug universal (armv7 + arm64) y la sube como artifact.
+# No requiere keystore (usa el debug keystore autogenerado por AGP).
 
 name: Build Debug APK
 
@@ -73,6 +76,7 @@ jobs:
           rm -rf ~/.gradle/caches/modules-2/files-2.1/com.google.dagger || true
           rm -rf ~/.gradle/caches/modules-2/files-2.1/androidx.hilt || true
           rm -rf ~/.gradle/caches/modules-2/files-2.1/androidx.room || true
+          rm -rf app/build/generated/ksp || true
 
       - name: Clean project build
         run: ./gradlew clean --stacktrace --no-daemon
