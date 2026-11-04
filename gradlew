@@ -24,7 +24,6 @@
 #
 ##############################################################################
 
-# Attempt to set APP_HOME
 app_path=$0
 while
     APP_HOME=${app_path%"${app_path##*/}"}
@@ -54,15 +53,20 @@ if [ -n "$JAVA_HOME" ] ; then
         JAVACMD=$JAVA_HOME/bin/java
     fi
     if [ ! -x "$JAVACMD" ] ; then
-        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME"
+        echo "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME" >&2
+        exit 1
     fi
 else
     JAVACMD=java
-    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH."
+    which java >/dev/null 2>&1 || {
+        echo "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH." >&2
+        exit 1
+    }
 fi
 
 if ! "$JAVACMD" -version >/dev/null 2>&1; then
-    die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME"
+    echo "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME" >&2
+    exit 1
 fi
 
 save () {
